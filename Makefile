@@ -6,7 +6,7 @@
 #    By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 21:02:30 by pbondoer          #+#    #+#              #
-#    Updated: 2018/01/24 18:10:28 by pbondoer         ###   ########.fr        #
+#    Updated: 2018/01/24 22:16:15 by pbondoer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,12 @@ SRC_DIR	:= ./src
 LIB_DIR	:= ./lib
 INC_DIR	:= ./includes
 OBJ_DIR	:= ./obj
+BIN_DIR	:= ./bin
 
 # src / obj files
-SRC		:=	test.c
+SRC		:=	test.c \
+			reader.c \
+			env.c
 
 OBJ		:= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
@@ -46,15 +49,17 @@ all:
 	@$(MAKE) -C $(L_PRINTF) --no-print-directory
 	@$(MAKE) $(NAME) --no-print-directory
 	@echo "[scop] 🎉"
+	@./$(BIN_DIR)/$(NAME) resources/42.obj
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(BIN_DIR)
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -I $(INC_DIR) $(LIB_INC) -o $@ -c $<
 
 $(NAME): $(OBJ_DIR) $(OBJ)
-	$(CC) $(OBJ) $(LIB_LNK) -o $(NAME)
+	$(CC) $(OBJ) $(LIB_LNK) -o $(BIN_DIR)/$(NAME)
 
 clean:
 	rm -rf $(OBJ_DIR)
